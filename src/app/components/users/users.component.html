@@ -1,0 +1,54 @@
+<div class="page">
+  <div class="page-inner">
+    <header class="page-title-bar">
+      <app-breadcrumb aria-label="breadcrumb" [bcrumb]="breadcrumb"></app-breadcrumb>
+    </header>
+    <app-config (onConfig)="onConfig($event)" [configName]="configName" [searchOn]="searchOn" [arr_key]="arr_key" [title]="title" [check_item]='check_item' (checkItem)="checkItem($event)"></app-config>
+    <div class="page-section">
+      <div class="card card-fluid">
+        <div class="card-body table-responsive">
+          <app-filter (onConfig)="onConfig($event)" (loadDatas)="loadDatas($event)" [pagination]="pagination" [hidden]="date_range_hidden" [items]="filter_items"></app-filter>
+          <table class="table dt-responsive nowrap w-100 dataTable dtr-inline">
+            <thead>
+              <tr>                           
+                <th class="align-middle text-right" width="40px">
+                  <div class="custom-control custom-control custom-control-inline custom-control-nolabel custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="select_all" checked=""> 
+                      <label class="custom-control-label" for="select_all">Checked</label>
+                  </div>
+                </th>
+                <th *ngFor="let temp of temps; let i = index" [hidden]="!temp.visible" class="{{temp.sort?(pagination.sortBy==temp.key?'sorting_' + pagination.orderBy:'sorting'):''}}" (click)="sortBy(temp.key, pagination.orderBy=='desc'?'asc':'desc', temp.sort?true:false)" >{{temp.value}}</th>
+                <th width="70px"> Active </th>
+                <th width="100px" class="align-middle text-center"> Action</th>
+              </tr>
+            </thead>                
+              <tbody>
+                <tr *ngFor="let item of datas; let n = index">
+                  <td class="align-middle text-right">
+                    <div class="custom-control custom-control custom-control-inline custom-control-nolabel custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="ckb{{n}}"> 
+                        <label class="custom-control-label" for="ckb{{n}}">Checked</label>
+                    </div>
+                  </td>             
+                  <td *ngFor="let temp of temps; let i = index" [hidden]="!temp.visible">{{ item[temp.key] | selectbox: temp.format}}</td>
+                  <td class="align-middle">
+                    <label class="switcher-control switcher-control-success switcher-control-lg">
+                      <input type="checkbox" class="switcher-input" > 
+                      <span class="switcher-indicator"></span> 
+                      <span class="switcher-label-on"><i class="fas fa-check"></i></span> 
+                      <span class="switcher-label-off"><i class="fas fa-times"></i></span>
+                    </label>
+                  </td>
+                  <td class="align-middle text-center">
+                    <a routerLink="{{item._id}}" class="btn btn-sm btn-info {{item.inactive > -1?'':'disabled'}}"><i class="fas fa-pen"></i> <span class="sr-only">Edit</span></a> 
+                    <a data-toggle="modal" data-target="#exampleModal" href="#" style="margin-left:5px;" class="btn btn-sm btn-info {{item.inactive > -1?'':'disabled'}}"><i class="far fa-trash-alt"></i> <span class="sr-only">Delete</span></a> 
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+          <pagination [disabled]="loading" [pagination]="pagination" (loadDatas)="loadDatas($event)"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

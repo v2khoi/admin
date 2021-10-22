@@ -1,0 +1,37 @@
+<div class="row align-items-center">
+	<div class="col-sm-12 col-md-5">
+		<div class="dataTables_info" id="dt-responsive_info" role="status" aria-live="polite">
+			Showing {{((pagination.page-1)*pagination.perPage) + 1 || 0}} to {{pagination.page*pagination.perPage > pagination.total ? (pagination.total) : (pagination.page*pagination.perPage)  || 0}} of {{pagination.total  || 0}} entries
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-7 d-flex justify-content-end">
+		<ul class="pagination justify-content-center">
+			<li class="paginate_button page-item previous {{pagination.page === 1?'disabled':''}}" id="dt-responsive_previous">
+				<a href="#" (click)="setPage(1)" aria-controls="dt-responsive" data-dt-idx="0" tabindex="0" class="page-link">
+					<i class="fas fa-angle-double-left"></i>
+				</a>
+			</li>
+			<li class="paginate_button page-item previous {{pagination.page === 1?'disabled':''}}" id="dt-responsive_previous">
+				<a href="#" (click)="setPage(pagination.page - 1)" aria-controls="dt-responsive" data-dt-idx="0" tabindex="0" class="page-link">
+					<i class="fas fa-angle-left"></i>
+				</a>
+			</li>
+			<li *ngFor="let key of range(1, setInt(pagination.total / pagination.perPage), 1)" class="page-item {{pagination.page==key?'active disabled':''}}">
+				<a href="#" (click)="setPage(key)" disabled="disabled"  class="page-link">{{key}}</a>
+			</li>                        
+			<li class="paginate_button page-item previous {{setInt(pagination.totalPage) <= pagination.page?'disabled':''}}" id="dt-responsive_previous">
+				<a href="#" (click)="setPage(pagination.page + 1)" aria-controls="dt-responsive" data-dt-idx="0" tabindex="0" class="page-link">
+					<i class="fas fa-angle-right"></i>
+				</a>
+			</li>
+			<li class="paginate_button page-item previous {{setInt(pagination.totalPage) <= pagination.page?'disabled':''}}" id="dt-responsive_previous">
+				<a href="#" (click)="setPage(setInt(pagination.total / pagination.perPage))" aria-controls="dt-responsive" data-dt-idx="0" tabindex="0" class="page-link">
+					<i class="fas fa-angle-double-right"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="spinner-border text-primary{{disabled?'':' d-none'}}" style="width: 3rem; height: 3rem;position: absolute;left: 50%;top: 50%;" role="status">
+	<span class="sr-only">Loading...</span>
+</div>

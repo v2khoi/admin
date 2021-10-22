@@ -1,0 +1,5 @@
+<ol class="breadcrumb">
+	<li class="breadcrumb-item active" *ngFor="let item of bcrumb; let i = index">
+		<a><i class="breadcrumb-icon mr-2 menu-icon fas {{i==0?'fa-cogs':''}}"></i>{{item.name}}</a> 
+	</li>
+</ol>

@@ -1,0 +1,45 @@
+<main class="auth">
+    <div id="auth-header" class="auth-header" style="background-image: url('/assets/images/img-1.png');">
+        <h1>
+            Administrator
+            <span class="sr-only">Sign In</span>
+        </h1>
+        <p> Don't have a account? <a href="auth-signup.html">Create One</a></p>
+        <canvas class="particles-js-canvas-el" width="1349" height="253" style="width: 100%; height: 100%;"></canvas>
+    </div><!-- form -->
+    <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- .form-group -->
+        <div class="form-group">
+            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="form-label-group">
+                <input type="email" [email]="true" id="loginName" formControlName="loginName" [ngClass]="{ 'is-invalid': submitted && f.loginName.errors }" class="form-control placeholder-shown" placeholder="Email" autofocus=""> 
+                <label for="loginName">Email</label>
+                <div *ngIf="submitted && f.loginName.errors" class="invalid-feedback">
+                    <div *ngIf="f.loginName.errors.required">Email is required</div>
+                    <div *ngIf="f.loginName.errors.email">Email is Invalid!</div>
+                </div>
+            </div>
+        </div><!-- /.form-group -->
+        <!-- .form-group -->
+        <div class="form-group">
+            <div class="form-label-group">
+                <input type="password" id="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" class="form-control placeholder-shown" placeholder="Password"> 
+                <label for="password">Password</label>
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+            </div>
+        </div><!-- /.form-group -->
+        <!-- .form-group -->
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-lg btn-primary btn-block">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Sign In
+            </button>
+        </div><!-- /.form-group -->
+    </form><!-- /.auth-form -->
+    <!-- copyright -->
+    <footer class="auth-footer"> © 2018 All Rights Reserved. <a href="#">Privacy</a> and <a href="#">Terms</a></footer>
+</main>

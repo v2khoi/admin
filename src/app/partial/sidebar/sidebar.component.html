@@ -1,0 +1,72 @@
+<div class="aside-content">
+  <header class="aside-header d-block d-md-none">
+    <button class="btn-account" type="button" data-toggle="collapse" data-target="#dropdown-aside">
+      <span class="user-avatar user-avatar-lg">
+        <img src="assets/images/avatars/profile.jpg" alt="">
+      </span>
+      <span class="account-icon">
+        <span class="fa fa-caret-down fa-lg"></span>
+      </span>
+      <span class="account-summary">
+        <span class="account-name">Võ Văn Khôi</span>
+        <span class="account-description">Administrator</span>
+      </span>
+    </button>
+    <div id="dropdown-aside" class="dropdown-aside collapse">
+      <div class="pb-3">
+        <a class="dropdown-item" href="#"><span class="dropdown-icon oi oi-person"></span> Profile</a>
+        <a class="dropdown-item" href="#"><span class="dropdown-icon oi oi-account-logout"></span> Logout</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Help Center</a>
+        <a class="dropdown-item" href="#">Ask Forum</a>
+        <a class="dropdown-item" href="#">Keyboard Shortcuts</a>
+      </div>
+    </div>
+  </header>
+  <section class="aside-menu perfect-scrollbar">
+    <nav id="stacked-menu" class="stacked-menu">
+      <ul class="menu">
+        <li class="menu-header">Menus</li>
+        <li class="menu-item" routerLinkActive="has-active">
+          <a routerLink="admin/dashboard" class="menu-link" >
+            <span class="menu-icon fas fa-home"></span>
+            <span class="menu-text">Dashboard</span>
+            <span class="badge badge-success">20+</span>
+          </a>
+        </li> 
+        <li class="menu-header">Admin settings </li>         
+        <li class="menu-item" routerLinkActive="has-active">
+          <a class="menu-link" routerLink="admin/store">
+            <span class="menu-icon fas fa-store"></span> 
+            <span class="menu-text">Stores</span>
+          </a>
+        </li>      
+        <li class="menu-item has-child" routerLinkActive="has-active">
+          <a class="menu-link">
+            <span class="menu-icon fas fa-users-cog"></span> 
+            <span class="menu-text">Users</span>
+          </a>
+          <ul class="menu">
+            <li class="menu-item" routerLinkActive="has-active">
+              <a routerLink="admin/users" class="menu-link" >Users</a>
+            </li>
+            <li class="menu-item" routerLinkActive="has-active">
+              <a routerLink="admin/groups" class="menu-link">User Groups</a>
+            </li>
+          </ul>
+        </li>      
+        <li class="menu-item has-child" routerLinkActive="has-active">
+          <a class="menu-link">
+            <span class="menu-icon fas fa-cogs"></span> 
+            <span class="menu-text">Settings</span>
+          </a>                    
+          <ul class="menu">
+            <li class="menu-item" routerLinkActive="has-active">
+              <a routerLink="admin/pages" class="menu-link" >Pages</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </section>
+</div>
