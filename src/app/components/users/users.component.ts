@@ -2,6 +2,8 @@ import { Component, OnInit, Pipe } from '@angular/core';
 import { Pagination } from '../../entities/pagination.entity';
 import { UserService } from './users.service';
 import { Config } from '../../entities/config.entity'
+import { XlsxService } from '../../services/xlsx/xlsx.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-users',
@@ -18,14 +20,35 @@ export class UsersComponent implements OnInit {
     value: 'invalid', 
     message: '\'Key name\' isn\'t empty'
   };
-  searchOn = '';
   loading = false;
   temps: any;
   datas: Object[] | any = [];
   arr_key: any;
   date_range_hidden = true;
+  currency = { name: 'en-US', code: 'USD'}
 
-  constructor(private userService: UserService) { }
+  current_item_id: any; 
+  complete: boolean = false;
+  list_selected = [];
+  modal = {
+    IsmodelShow: false,
+    type: 'warning', 
+    note: 'Warning', 
+    content: 'Do you want to delete?',
+    form: '',
+    button: [
+      { 
+        text: 'Yes', 
+        action: (id: any) => { this.inactive(id, 'status', 'deleted'); }
+      }
+    ]
+  };
+
+  constructor(
+    private xlsx: XlsxService,
+    private userService: UserService) {
+      this.pagination.sortBy = 'email'
+    }
 
   ngOnInit(): void {}
 
@@ -33,8 +56,8 @@ export class UsersComponent implements OnInit {
     this.loading = loading;    
     this.userService.getUsers(pagination).subscribe((result: any) => {
       this.pagination = result.data.pagination;
-      this.datas = result.data.users
-      if(result.data.users.length > 0){
+      this.datas = result.data.datas
+      if(result.data.datas.length > 0){
         this.arr_key = Object.keys(this.datas[0]);
       }
       this.loading = false;
@@ -50,7 +73,7 @@ export class UsersComponent implements OnInit {
 
   onConfig(items: Config[] | string){
     if(typeof items == 'string' && this.date_range_hidden){
-      this.pagination.dateRange = items;
+      // this.pagination.dateRange = items;
     }else if(typeof items == 'object'){
       this.pagination.searchOn = items.filter(row => { 
         if(row.key == 'createdAt') 
@@ -65,12 +88,78 @@ export class UsersComponent implements OnInit {
 
   checkItem(value: any){
     let temp = this.datas as [];
-    this.check_item = temp.find(x => x[value])?{
+    this.check_item = temp.find(x => x[value] !== undefined)?{
       value: 'valid', 
       message: `Key name: \'${value}\' is found`
     }:{
       value: 'invalid', 
       message: `Key name: \'${value}\' isn\'t found`
     };
+  }
+
+  addItem(item: Object[], event: any){
+    // @ts-ignore
+    const index: number = this.list_selected.indexOf(item.id);
+    if(index == -1){
+      if(event.target.checked == true)
+        // @ts-ignore
+        this.list_selected.push(item.id);
+    }else if(event.target.checked == false){
+      this.list_selected.splice(index, 1);
+    }
+  }
+
+  setAll(event: any){
+    // @ts-ignore
+    this.datas.map(item => {
+      this.addItem(item, event);
+    });
+  }
+
+  onChecked(item: any){
+    // @ts-ignore
+    const index: number = this.list_selected.indexOf(item.id);
+    return (index !== -1)?true:false;
+  }
+
+  onDelete(ids: any){
+    this.modal.content = "Do you want to delete this item?";
+    if(typeof(ids) == 'object' && this.list_delete().length > 1){
+      this.modal.content = "Do you want to delete (" + this.list_delete().length + ") items?";
+      this.current_item_id = this.list_selected;
+    }else{
+      this.current_item_id = ids;
+    }    
+  }
+  
+  list_delete = (cond = [-1]) => {
+    let _ids: string[] = this.list_selected
+    return _ids;
+  };
+
+  inactive(ids: any, propName: string = 'status', status = 'active'){
+    if(typeof(ids) == 'object'){
+      ids = this.list_delete();
+    }
+    this.userService.editUsers(ids, {        
+      ids: (typeof(ids) == 'object'? ids:[ids]),
+      update: [{'propName': propName, 'value': status}]
+    }).subscribe((result) => {
+      if(status == 'deleted'){
+        this.complete = false;
+        this.list_selected = [];
+      }
+      this.loadDatas(this.pagination);
+    });
+    
+    return false;
+  }
+
+  onExport(){
+    const exported = true
+    const params:any = { ...this.pagination, exported }
+    this.userService.getUsers(params).subscribe((result: any) => {
+      this.xlsx.xportAsExcelFile(result.data.datas, this.temps, 'users_');
+    }) 
   }
 }

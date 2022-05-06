@@ -9,20 +9,28 @@ import { ConfigService } from './config.service';
 export class ConfigComponent implements OnInit {
   @Input() title = '';
   @Input() configName = '';
-  @Input() searchOn = '';
   @Input('temps') items: Object[] | any = [];
   @Input() arr_key: any;
+  @Input() list_selected: any = [];
   @Input() check_item = {
     value: 'invalid', 
     message: '\'Key name\' isn\'t empty'
   };
   @Output() checkItem = new EventEmitter <any> ();
   @Output() onConfig = new EventEmitter <any> ();
+  @Output() onDelete = new EventEmitter <any> ();
+  @Output() onExport = new EventEmitter <any> ();
 
   hidden = true;
   keyname = '';
+  alert = {
+    hidden: true,
+    type: 'success',
+    message: 'Thành công'
+  }
 
-  constructor(private config: ConfigService) { }
+  constructor(
+    private config: ConfigService) { }
 
   ngOnInit(): void {
     this.onLoad()
@@ -32,6 +40,9 @@ export class ConfigComponent implements OnInit {
     this.config.getJson(this.configName).subscribe((result: any) => {
       const configs = result.data.config;
       this.items = configs.guiTable;
+      this.alert.type = result.code == 200? 'success': 'danger'
+      this.alert.message = result.message
+      this.alert.hidden = false
       this.onConfig.emit(this.items);
     });
   }
@@ -39,9 +50,11 @@ export class ConfigComponent implements OnInit {
   onSave(){
     this.config.putJson(this.configName, { guiTable:  this.items }).subscribe((result: any) => {
       this.items = result.data.config.guiTable;
+      this.alert.type = result.code == 200? 'success': 'danger'
+      this.alert.message = result.message
+      this.alert.hidden = false
       this.onConfig.emit(this.items);
     });
-    this.onClose()
   }
 
   addField(){
@@ -49,7 +62,7 @@ export class ConfigComponent implements OnInit {
       this.items = [];
     
     if(this.check_item.value == 'valid'){
-      this.items.push({key: this.keyname, value: '', format: '', sort: false, visible: false, search: false});
+      this.items.push({key: this.keyname, value: '', format: '', sort: false, visible: false, search: false, export: false});
       this.check_item = {
         value: 'invalid', 
         message: '\'Key name\' isn\'t empty'
@@ -100,6 +113,16 @@ export class ConfigComponent implements OnInit {
   }
 
   onClose(){
+    this.alert.hidden = true
     this.hidden = true;
+  }
+
+  delete(){
+    this.onDelete.emit(this.list_selected)
+  }  
+
+  exportAsXLSX() {
+    this.onExport.emit()
+    return false;
   }
 }

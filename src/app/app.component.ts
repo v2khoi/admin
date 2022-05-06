@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from './entities/user.entity';
 import { AuthenticationService } from './services/auth/authentication.service';
-// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +7,15 @@ import { AuthenticationService } from './services/auth/authentication.service';
 })
 export class AppComponent {
   title = 'app-admin';
+  currentUser = {};
 
-  // public constructor(  
-  //   private currentUser: User,
-  //   // private router: Router,
-  //   private authenticationService: AuthenticationService
-  // ){
-  //   this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-  // }
+  constructor(
+    private authenticationService: AuthenticationService,
+  ) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  }
 
-  // ngOnInit(){}
+  ngOnInit(): void {    
+    this.currentUser = JSON.parse(localStorage.getItem('currentUserData') || '{}');
+  }
 }

@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class GroupService {
 
-  private groupUrl = "groups";
+  private groupUrl = "roles";
   constructor(
     private http: HttpClient,
     private MessageService: MessageService
@@ -43,6 +43,14 @@ export class GroupService {
     return this.http.patch(url, params, httpOptions).pipe(
       tap(_ => this.log(`fetched page id=${id}`)),
       catchError(this.handleError<Group>(`getGroup id=${id}`))
+    );
+  }
+
+  editGroups(ids: string[], params: any) {
+    const url = `${environment.apiUrl}/${this.groupUrl}`;
+    return this.http.put(url, params, httpOptions).pipe(
+      tap(_ => this.log(`fetched page id=${ids}`)),
+      catchError(this.handleError<Group>(`getUser id=${ids}`))
     );
   }
 

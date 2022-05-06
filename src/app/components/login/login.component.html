@@ -4,7 +4,7 @@
             Administrator
             <span class="sr-only">Sign In</span>
         </h1>
-        <p> Don't have a account? <a href="auth-signup.html">Create One</a></p>
+        <p> Don't have a account? <a routerLink="admin/signup">Create One</a></p>
         <canvas class="particles-js-canvas-el" width="1349" height="253" style="width: 100%; height: 100%;"></canvas>
     </div><!-- form -->
     <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -14,11 +14,11 @@
         </div>
         <div class="form-group">
             <div class="form-label-group">
-                <input type="email" [email]="true" id="loginName" formControlName="loginName" [ngClass]="{ 'is-invalid': submitted && f.loginName.errors }" class="form-control placeholder-shown" placeholder="Email" autofocus=""> 
-                <label for="loginName">Email</label>
+                <input id="loginName" formControlName="loginName" [ngClass]="{ 'is-invalid': submitted && f.loginName.errors }" class="form-control placeholder-shown" placeholder="Username, email or mobile" autofocus=""> 
+                <label for="loginName">Username, email or mobile</label>
                 <div *ngIf="submitted && f.loginName.errors" class="invalid-feedback">
-                    <div *ngIf="f.loginName.errors.required">Email is required</div>
-                    <div *ngIf="f.loginName.errors.email">Email is Invalid!</div>
+                    <div *ngIf="f.loginName.errors.required">Username, email or mobile is required</div>
+                    <div *ngIf="f.loginName.errors.loginName">Username, email or mobile is Invalid!</div>
                 </div>
             </div>
         </div><!-- /.form-group -->

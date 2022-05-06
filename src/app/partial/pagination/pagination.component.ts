@@ -12,9 +12,7 @@ export class PaginationComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.pagination)
-  }  
+  ngOnInit(): void {}  
 
   setPage(page: number) {
     if(this.pagination.page != page){
@@ -35,6 +33,4 @@ export class PaginationComponent implements OnInit {
   setInt(num: number){
     return Math.ceil(num);
   }
-
-
 }

@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Pagination } from '../../entities/pagination.entity';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,6 +26,7 @@ export class UserService {
   getUsers(options : HttpParams){
     const url = `${environment.apiUrl}/${this.userUrl}`;
     return this.http.get(url, { params: options }).pipe(
+      tap(_ => this.log(`fetched page id=${options}`)),
       catchError(this.handleError<User[]>(`getUsers`))
     )
   }
@@ -39,11 +39,11 @@ export class UserService {
     )
   }
 
-  editUser(id: string, params: Array<any>) {
+  editUsers(ids: string[], params: any) {
     const url = `${environment.apiUrl}/${this.userUrl}`;
-    return this.http.patch(url, params, httpOptions).pipe(
-      tap(_ => this.log(`fetched page id=${id}`)),
-      catchError(this.handleError<User>(`getUser id=${id}`))
+    return this.http.put(url, params, httpOptions).pipe(
+      tap(_ => this.log(`fetched page id=${ids}`)),
+      catchError(this.handleError<User>(`getUser id=${ids}`))
     );
   }
 

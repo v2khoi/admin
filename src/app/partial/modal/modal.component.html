@@ -1,1 +1,20 @@
-<p>modal works!</p>
+<div class="modal modal-alert fade has-shown show" tabindex="-1" id="globalModal" role="dialog" aria-labelledby="exampleModalAlertWarningLabel">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <app-alert [hidden]="alert.hidden" [type]="alert.type" [message]="alert.message"></app-alert>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="exampleModalAlertWarningLabel" class="modal-title">
+                    <i class="fa fa-bullhorn text-{{modal.type}} mr-1"></i> {{modal.note}}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p> {{modal.content}} </p>
+                <div *ngIf="modal.form!=''" [innerHTML]="modal.form | keepHtml"></div>
+            </div>
+            <div class="modal-footer"  *ngFor="let button of modal.button; let n = index">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="button.action(currentId)" type="button" class="btn btn-warning" data-dismiss="modal">{{button.text}}</button>
+            </div>
+        </div>
+    </div>
+</div>

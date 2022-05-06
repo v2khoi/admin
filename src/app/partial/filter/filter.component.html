@@ -14,7 +14,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="dataTables_filter" [hidden]="hidden">
 				<label class="control-label"  for="flatpickr07">Created Date: 
-					<input (change)="onChangeDate($event)" id="flatpickr07" type="text" class="form-control" data-toggle="flatpickr" data-mode="range" data-date-format="Y-m-d" [attr.data-default-dates]="date_range">
+					<input (change)="onChangeDate($event)" id="flatpickr07" type="text" class="form-control flatpickr-input" data-toggle="flatpickr" readonly="true" data-mode="range" data-date-format="Y-m-d" [attr.data-default-dates]="date_range">
 				</label>  
 			</div>
 			<div id="dt-responsive_filter" class="dataTables_filter">  

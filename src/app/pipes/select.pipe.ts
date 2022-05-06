@@ -4,9 +4,9 @@ import * as moment from 'moment'
 @Pipe({
   name: 'selectbox'
 })
-
 export class SelectboxPipe implements PipeTransform {
-    transform(item: string, sel?: any): any {
+
+    transform(item: string, sel?: any, arg1?: any, arg2?: any, arg3?: any): any {
         switch(sel){
             case '1':
                 return this.phoneFormat(item);
@@ -14,6 +14,13 @@ export class SelectboxPipe implements PipeTransform {
                 return this.dateFormat(item);
             case '3':
                 return this.dateFormat(item, 'DD/MM/YYYY h:mm:ss a');
+            case '4':
+                return (+item).toLocaleString(arg1, {
+                    style: 'currency',
+                    currency: arg2,
+                });
+            case '5':
+                return item ? 'Active' : 'Blocked'
             default:
                 return item;
         }

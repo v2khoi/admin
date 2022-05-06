@@ -7,10 +7,6 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- BEGIN PLUGINS STYLES -->
-    <!-- plugins styles goes here -->
-    <!-- END PLUGINS STYLES -->
-
     <!-- BEGIN THEME STYLES -->
 		<link rel="stylesheet" href="assets/stylesheets/open-iconic-bootstrap.min.css" > 
     <link rel="stylesheet" href="assets/vendor/flatpickr/flatpickr.min.css">
@@ -21,6 +17,7 @@
     <!-- Disable unused skin immediately -->
     <script>
       var skin = localStorage.getItem('skin') || 'default';
+			var isCompact = JSON.parse(localStorage.getItem('hasCompactMenu'));
       var disabledSkinStylesheet = document.querySelector('link[data-skin]:not([data-skin="'+ skin +'"])');
 
       // Disable unused skin immediately
@@ -29,19 +26,15 @@
 
       // add loading class to html immediately
       document.querySelector('html').classList.add('loading');
+			// add flag class to html immediately
+			if (isCompact == true) document.querySelector('html').classList.add('preparing-compact-menu');
     </script>
     <!-- END THEME STYLES -->
-
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <!-- styles for specific page goes here -->
-    <!-- END PAGE LEVEL STYLES -->
-
     <title>Administrator</title>
   </head>
   <body>
     <app-root></app-root>
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- BEGIN BASE JS -->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/popper.js/umd/popper.min.js"></script>
@@ -50,16 +43,16 @@
 
     <!-- BEGIN PLUGINS JS -->
     <script src="assets/vendor/stacked-menu/js/stacked-menu.min.js"></script>
-    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
-    <!-- <script src="assets/vendor/flatpickr/plugins/monthSelect/index.js"></script> -->
     <!-- END PLUGINS JS -->
 
     <!-- BEGIN THEME JS -->
     <script src="assets/javascript/theme.min.js"></script>
+    <script src="assets/javascript/particles.js"></script>
+    <script>
+      $(document).on('theme:init', () => {
+        particlesJS.load('auth-header', 'assets/javascript/json/particles.json');
+      })
+    </script>
     <!-- END THEME JS -->
-
-    <!-- BEGIN PAGE LEVEL JS -->
-    <!-- your js for specific page goes here -->
-    <!-- END PAGE LEVEL JS -->
   </body>
 </html>

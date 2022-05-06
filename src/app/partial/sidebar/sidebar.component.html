@@ -48,10 +48,10 @@
           </a>
           <ul class="menu">
             <li class="menu-item" routerLinkActive="has-active">
-              <a routerLink="admin/users" class="menu-link" >Users</a>
+              <a [routerLink]="['/admin/users']" class="menu-link" >Users</a>
             </li>
             <li class="menu-item" routerLinkActive="has-active">
-              <a routerLink="admin/groups" class="menu-link">User Groups</a>
+              <a [routerLink]="['/admin/groups']" class="menu-link">User Groups</a>
             </li>
           </ul>
         </li>      
@@ -69,4 +69,7 @@
       </ul>
     </nav>
   </section>
+  <footer class="aside-footer border-top p-2">
+    <button (click)="nightMode()" class="btn btn-light btn-block text-primary" data-toggle="skin"><span class="d-compact-menu-none">Night mode</span> <i class="fa-moon ml-1 far"></i></button>
+  </footer>
 </div>

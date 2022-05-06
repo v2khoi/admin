@@ -1,4 +1,4 @@
-<div class="app">
+<div class="app"  *ngIf="(currentUser | json) != '{}';else login">
   <app-header class="app-header app-header-dark"></app-header>
   <app-sidebar class="app-aside app-aside-light app-aside-expand-md"></app-sidebar>
   <main class="app-main">
@@ -7,6 +7,6 @@
     </div>
   </main>
 </div>
-<!-- <ng-template #login>
+<ng-template #login>
     <app-login></app-login>
-</ng-template> -->
+</ng-template>

@@ -1,16 +1,155 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><a><i class="fas fa-cogs"></i> Configs</a></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+					<!-- .card-header -->
+					<div class="card-header">
+						<ul class="nav nav-tabs card-header-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#card-gui">GUI table</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link show" data-toggle="tab" href="#card-pagination">Pagination & Filters</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link show" data-toggle="tab" href="#card-filters">Notifications Settings</a>
+						</li>
+						</ul>
+					</div><!-- /.card-header -->
+					<!-- .card-body -->
+					<div class="card-body">
+						<!-- .tab-content -->
+						<div id="myTabCard" class="tab-content">
+							<app-alert [hidden]="alert.hidden" [type]="alert.type" [message]="alert.message"></app-alert>							
+							<div class="tab-pane fade active show sortable-tile" id="card-gui">
+								<div class="todo-list todo-list-bordered" cdkDropList  (cdkDropListDropped)="onDrop($event)" [cdkDropListData]="items">
+									<div cdkDrag *ngFor="let item of items; let n = index" class="todo">
+										<span class="drag-indicator"></span>  
+										<div class="col-md-3">
+											<div class="form-label-group">
+												<input (keyup)="updateItem(n, 'value', $event)" type="text" required class="form-control" id="fl6-{{item.key}}" [(ngModel)]="item.value" placeholder="{{item.key}}"> <label for="fl6-{{item.key}}">{{item.key}}</label>
+											</div>        
+										</div>    
+										<div class="col-md-3">	
+											<div class="form-label-group">
+												<select (change)="updateFormat(n, $event)" class="custom-select">
+													<option value=""> None</option>
+													<optgroup label="Phone Number">
+														<option [selected]="item.format == '1'" value="1"> Phone (###-###-####)</option>
+													</optgroup>
+													<optgroup label="Date">
+														<option [selected]="item.format == '2'" value="2"> Date (DD/MM/YYYY)</option>
+														<option [selected]="item.format == '3'" value="3"> Date (DD/MM/YYYY h:mm:ss a)</option>
+													</optgroup>
+													<optgroup label="Currency">
+														<option [selected]="item.format == '4'" value="4"> Number ($###,###.00)</option>
+													</optgroup>
+													<option [selected]="item.format == '5'" value="5"> Boolean (True/false)</option>
+												</select> 
+												<label for="fls1">Format</label>
+											</div>
+										</div>
+										<div class="col-md-6 text-right">	          
+											<div class="todo-actions d-block">
+												Visible : <label class="switcher-control switcher-control-success">
+													<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'visible', !item.visible)" [ngModel]="item.visible"> 
+													<span class="switcher-indicator"></span> 
+													<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
+													<span class="switcher-label-off"><i class="fas fa-times"></i></span>
+												</label>
+												Sort : <label class="switcher-control switcher-control-success">
+													<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'sort', !item.sort)" [ngModel]="item.sort"> 
+													<span class="switcher-indicator"></span> 
+													<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
+													<span class="switcher-label-off"><i class="fas fa-times"></i></span>
+												</label>
+												Search : <label class="switcher-control switcher-control-success">
+													<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'search', !item.search)" [ngModel]="item.search"> 
+													<span class="switcher-indicator"></span> 
+													<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
+													<span class="switcher-label-off"><i class="fas fa-times"></i></span>
+												</label>
+												Export : <label class="switcher-control switcher-control-success">
+													<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'export', !item.export)" [ngModel]="item.export"> 
+													<span class="switcher-indicator"></span> 
+													<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
+													<span class="switcher-label-off"><i class="fas fa-times"></i></span>
+												</label>
+												<div (click)="removeItem(n)" class="btn btn-sm btn-icon btn-light">
+													<i class="fa fa-trash"></i>
+												</div>
+												<div class="btn btn-sm btn-icon btn-light" cdkDragHandle>
+													<i class="fa fa-arrows-alt"></i>
+												</div>
+											</div>
+										</div>     
+									</div>
+								</div>
+								<div class="dropdown-divider"></div>
+								<div class="todo-list todo-list-bordered">
+									<div class="todo" style="display:-webkit-box">
+										<span class="drag-indicator"></span> 
+										<div class="col-md-3">
+											<!-- <input (keyup)="checkKey($event)" (keyup.enter)="addField()" [(ngModel)]="keyname" type="text" autocomplete="off" spellcheck="false" dir="ltr" class="tt-hint form-control is-{{check_item.value}}" id="validationTooltip01" placeholder="Key name" value="{{keyname}}" required="1"> -->
+											<select [(ngModel)]="keyname" (change)="checkKey($event)" class="custom-select is-{{check_item.value}}" required="">
+												<option value=''> Choose... </option>
+												<option *ngFor="let value of arr_key" value='{{value}}'> {{value}} </option>
+											</select>
+											<div class="{{check_item.value}}-feedback">
+												{{check_item.message}}
+											</div>
+											<div class="tt-menu">
+												<div class="tt-dataset tt-dataset-best-pictures"><div class="tt-suggestion tt-selectable">Lawrence of Arabia</div><div class="tt-suggestion tt-selectable">A Man for All Seasons</div><div class="tt-suggestion tt-selectable">Annie Hall</div><div class="tt-suggestion tt-selectable">Amadeus</div><div class="tt-suggestion tt-selectable">Out of Africa</div></div>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<button type="button" (click)="addField()" class="btn btn-primary">Add</button>	
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="card-pagination">
+								<h5 class="card-title"> Special title treatment </h5>
+								<p class="card-text"> With supporting text below as a natural lead-in to additional content. </p><a href="#" class="btn btn-danger">Go somewhere</a>
+							</div>
+							<div class="tab-pane fade" id="card-filters">
+								<h5 class="card-title"> Special title treatment </h5>
+								<p class="card-text"> With supporting text below as a natural lead-in to additional content. </p><a href="#" class="btn btn-danger">Go somewhere</a>
+							</div>
+						</div><!-- /.tab-content -->
+					</div><!-- /.card-body -->    
+					<div class="dropdown-divider"></div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" (click)="onClose()"  data-dismiss="modal" type="button">Close</button>
+						<button class="btn btn-primary" (click)="onLoad()" type="button"><i class="fas fa-sync-alt"></i> Refesh</button>
+						<button class="btn btn-primary" (click)="onSave()" type="button"><i class="far fa-save"></i> Save</button>
+					</div>
+				</div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="d-md-flex align-items-md-start">
 	<div class="section-block">
 		<h1 class="page-title"> {{title}} </h1>
 		<p class="text-muted"> GUI table... </p>
 	</div>	
 	<div class="btn-toolbar ml-md-auto">
-		<button data-toggle="modal" data-target="#exampleModal" type="button" class="btn btn-light">
+		<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#globalModal" (click)="delete()" disabled="{{(list_selected.length > 0)?'':'disabled'}}">
 			<i class="oi oi-trash "></i><span class="ml-1">Delete</span>
 		</button>            
-		<button type="button" class="btn btn-light">
+		<button type="button" class="btn btn-light" disabled="{{(list_selected.length > 0)?'':'disabled'}}">
 			<i class="fas fa-times"></i><span class="ml-1">Inactive</span>
 		</button>      
-		<button type="button" class="btn btn-light">
+		<button type="button" class="btn btn-light" disabled="{{(list_selected.length > 0)?'':'disabled'}}">
 			<i class="oi oi-check"></i><span class="ml-1">Active</span>
 		</button>
 		<div class="dropdown btn-group">
@@ -20,120 +159,11 @@
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-arrow"></div>
 				<a href="#" class="dropdown-item"><span class="fas fa-plus-circle"></span> Insert New</a> 
-				<a href="#" class="dropdown-item"><span class="oi oi-file"></span> Export (.xlsx)</a>
+				<a href="#" class="dropdown-item" (click)="exportAsXLSX()"><span class="oi oi-file"></span> Export (.xlsx)</a>
 				<div class="dropdown-divider"></div>
 				<a href="#" class="dropdown-item disabled"><span class="fas fa-question-circle"></span> Help</a> 
-				<a href="#" (click)="showConfigs()" class="dropdown-item"><span class="fas fa-cogs"></span> Configs</a> 
+				<a href="#" data-toggle="modal" data-target="#exampleModal" class="dropdown-item"><span class="fas fa-cogs"></span> Configs</a> 
 			</div>
 		</div>
-	</div>
-</div>
-<div [hidden]="hidden" class="card">
-	<!-- .card-header -->
-	<div class="card-header">
-		<ul class="nav nav-tabs card-header-tabs">
-		<li class="nav-item">
-			<a class="nav-link active" data-toggle="tab" href="#card-gui">GUI table</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link show" data-toggle="tab" href="#card-pagination">Pagination & Filters</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link show" data-toggle="tab" href="#card-filters">Notifications Settings</a>
-		</li>
-		</ul>
-	</div><!-- /.card-header -->
-	<!-- .card-body -->
-	<div class="card-body">
-		<!-- .tab-content -->
-		<div id="myTabCard" class="tab-content">
-			<div class="tab-pane fade active show sortable-tile" id="card-gui">
-				<div class="todo-list todo-list-bordered" cdkDropList  (cdkDropListDropped)="onDrop($event)" [cdkDropListData]="items">
-					<div cdkDrag *ngFor="let item of items; let n = index" class="todo">
-						<span class="drag-indicator"></span>  
-						<div class="col-md-3">
-							<div class="form-label-group">
-								<input (keyup)="updateItem(n, 'value', $event)" type="text" required class="form-control" id="fl6-{{item.key}}" [(ngModel)]="item.value" placeholder="{{item.key}}"> <label for="fl6-{{item.key}}">{{item.key}}</label>
-							</div>        
-						</div>    
-						<div class="col-md-3">	
-							<div class="form-label-group">
-								<select (change)="updateFormat(n, $event)" class="custom-select">
-									<option value=""> None</option>
-									<option [selected]="item.format == '1'" value="1"> Phone Number (###-###-####)</option>
-									<option [selected]="item.format == '2'" value="2"> Date (DD/MM/YYYY)</option>
-									<option [selected]="item.format == '3'" value="3"> Date (DD/MM/YYYY h:mm:ss a)</option>
-								</select> 
-								<label for="fls1">Format</label>
-							</div>
-						</div>
-						<div class="col-md-6 text-right">	          
-							<div class="todo-actions d-block">
-								Search : <label class="switcher-control switcher-control-success">
-									<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'search', !item.search)" [ngModel]="item.search"> 
-									<span class="switcher-indicator"></span> 
-									<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
-									<span class="switcher-label-off"><i class="fas fa-times"></i></span>
-								</label>
-								Visible : <label class="switcher-control switcher-control-success">
-									<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'visible', !item.visible)" [ngModel]="item.visible"> 
-									<span class="switcher-indicator"></span> 
-									<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
-									<span class="switcher-label-off"><i class="fas fa-times"></i></span>
-								</label>
-								Sort : <label class="switcher-control switcher-control-success">
-									<input type="checkbox" class="switcher-input" (change)="updateItem(n, 'sort', !item.sort)" [ngModel]="item.sort"> 
-									<span class="switcher-indicator"></span> 
-									<span class="switcher-label-on"><i class="fas fa-check"></i></span> 
-									<span class="switcher-label-off"><i class="fas fa-times"></i></span>
-								</label>
-								<div (click)="removeItem(n)" class="btn btn-sm btn-icon btn-light">
-									<i class="fa fa-trash"></i>
-								</div>
-								<div class="btn btn-sm btn-icon btn-light" cdkDragHandle>
-									<i class="fa fa-arrows-alt"></i>
-								</div>
-							</div>
-						</div>     
-					</div>
-				</div>
-				<div class="dropdown-divider"></div>
-				<div class="todo-list todo-list-bordered">
-					<div class="todo" style="display:-webkit-box">
-						<span class="drag-indicator"></span> 
-						<div class="col-md-3">
-							<!-- <input (keyup)="checkKey($event)" (keyup.enter)="addField()" [(ngModel)]="keyname" type="text" autocomplete="off" spellcheck="false" dir="ltr" class="tt-hint form-control is-{{check_item.value}}" id="validationTooltip01" placeholder="Key name" value="{{keyname}}" required="1"> -->
-							<select [(ngModel)]="keyname" (change)="checkKey($event)" class="custom-select is-{{check_item.value}}" required="">
-								<option value=''> Choose... </option>
-								<option *ngFor="let value of arr_key" value='{{value}}'> {{value}} </option>
-							</select>
-							<div class="{{check_item.value}}-feedback">
-								{{check_item.message}}
-							</div>
-							<div class="tt-menu">
-								<div class="tt-dataset tt-dataset-best-pictures"><div class="tt-suggestion tt-selectable">Lawrence of Arabia</div><div class="tt-suggestion tt-selectable">A Man for All Seasons</div><div class="tt-suggestion tt-selectable">Annie Hall</div><div class="tt-suggestion tt-selectable">Amadeus</div><div class="tt-suggestion tt-selectable">Out of Africa</div></div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<button type="button" (click)="addField()" class="btn btn-primary">Add</button>	
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="card-pagination">
-				<h5 class="card-title"> Special title treatment </h5>
-				<p class="card-text"> With supporting text below as a natural lead-in to additional content. </p><a href="#" class="btn btn-danger">Go somewhere</a>
-			</div>
-			<div class="tab-pane fade" id="card-filters">
-				<h5 class="card-title"> Special title treatment </h5>
-				<p class="card-text"> With supporting text below as a natural lead-in to additional content. </p><a href="#" class="btn btn-danger">Go somewhere</a>
-			</div>
-		</div><!-- /.tab-content -->
-	</div><!-- /.card-body -->    
-	<div class="dropdown-divider"></div>
-	<div class="modal-footer">
-		<button class="btn btn-secondary" (click)="onClose()" type="button">Close</button>
-		<button class="btn btn-primary" (click)="onLoad()" type="button"><i class="fas fa-sync-alt"></i> Refesh</button>
-		<button class="btn btn-primary" (click)="onSave()" type="button"><i class="far fa-save"></i> Save & Close</button>
 	</div>
 </div>
